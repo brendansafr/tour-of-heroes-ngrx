@@ -27,10 +27,9 @@ export class HeroService {
     return of(hero);
   }
 
+  /** GET heroes from the server */
   getHeroes(): Observable<Hero[]> {
-    const heroes = of(HEROES);
-    this.messageService.add('HeroService: fetched heroes');
-    return heroes;
+    return this.http.get<Hero[]>(this.heroesUrl);
   }
 
   /** Log a HeroService message with the MessageService */
