@@ -1,10 +1,13 @@
 <div id="search-component">
-  <label for="search-box">Hero Search</label>
-  <input #searchBox id="search-box" (input)="search(searchBox.value)" />
-
+  <label>Hero Search</label>
   <mat-form-field appearance="fill">
-    <mat-label>Input</mat-label>
-    <input matInput />
+    <mat-label>Hero Name</mat-label>
+    <input
+      matInput
+      #searchBox
+      id="search-box"
+      (input)="search(searchBox.value)"
+    />
   </mat-form-field>
 
   <ul class="search-result">
