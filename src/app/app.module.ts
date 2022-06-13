@@ -39,7 +39,6 @@ import { HeroSearchComponent } from './hero-search/hero-search.component';
     BrowserAnimationsModule,
     FormsModule,
     FlexLayoutModule,
-    AppRoutingModule,
     HttpClientModule,
 
     // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
@@ -49,6 +48,7 @@ import { HeroSearchComponent } from './hero-search/hero-search.component';
       dataEncapsulation: false,
     }),
 
+    AppRoutingModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
