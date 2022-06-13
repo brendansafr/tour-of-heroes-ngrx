@@ -1,31 +1,46 @@
+<form>
+  <h2>Add a Hero</h2>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Hero Name</mat-label>
+    <input id="new-hero" #heroName matInput placeholder="Hero Name" />
+  </mat-form-field>
+  <div>
+    <button
+      mat-raised-button
+      type="button"
+      color="accent"
+      (click)="add(heroName.value); heroName.value = ''"
+    >
+      Add hero
+    </button>
+  </div>
+</form>
+
 <h2>My Heroes</h2>
 
-<div>
-  <label for="new-hero">Hero name: </label>
-  <input id="new-hero" #heroName />
-
-  <!-- (click) passes input value to add() and then clears the input -->
-  <button
-    type="button"
-    class="add-button"
-    (click)="add(heroName.value); heroName.value = ''"
-  >
-    Add hero
-  </button>
-</div>
-
-<ul class="heroes">
-  <li *ngFor="let hero of heroes">
-    <a routerLink="/detail/{{ hero.id }}">
-      <span class="badge">{{ hero.id }}</span> {{ hero.name }}
+<mat-nav-list>
+  <mat-list-item *ngFor="let hero of heroes" routerLink="/detail/{{ hero.id }}">
+    <span matLine>
+      <h3>
+        {{ hero.name }}
+      </h3>
+    </span>
+    <a
+      mat-raised-button
+      color="primary"
+      matBadge="{{ hero.id }}"
+      matBadgePosition="before"
+    >
+      Show Details
     </a>
     <button
+      mat-mini-fab
+      color="warn"
       type="button"
-      class="delete"
       title="delete hero"
       (click)="delete(hero)"
     >
-      x
+      <mat-icon>delete</mat-icon>
     </button>
-  </li>
-</ul>
+  </mat-list-item>
+</mat-nav-list>

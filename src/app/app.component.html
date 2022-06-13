@@ -1,7 +1,21 @@
-<h1>{{ title }}</h1>
-<nav>
-  <a routerLink="/dashboard">Dashboard</a>
-  <a routerLink="/heroes">Heroes</a>
+<mat-toolbar fxLayoutAlign="space-between center">
+  <h1>{{ title }}</h1>
+  <button mat-icon-button (click)="openMessagesDialog()">
+    <mat-icon> messages </mat-icon>
+  </button>
+</mat-toolbar>
+
+<nav mat-tab-nav-bar [tabPanel]="tabPanel">
+  <a
+    mat-tab-link
+    *ngFor="let link of links; let i = index"
+    [routerLink]="link.path"
+    [active]="isLinkActive(i)"
+  >
+    {{ link.name }}
+  </a>
 </nav>
-<router-outlet></router-outlet>
-<app-messages></app-messages>
+
+<mat-tab-nav-panel #tabPanel>
+  <router-outlet></router-outlet>
+</mat-tab-nav-panel>
