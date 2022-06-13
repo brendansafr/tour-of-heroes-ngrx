@@ -10,6 +10,7 @@ import { InMemoryDataService } from './in-memory-data.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { AppComponent } from './app.component';
 import { HeroesComponent } from './heroes/heroes.component';
@@ -46,6 +47,7 @@ import { HeroSearchComponent } from './hero-search/hero-search.component';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatTabsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
