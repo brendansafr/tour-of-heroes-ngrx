@@ -1,4 +1,9 @@
-<h1>{{ title }}</h1>
+<mat-toolbar fxLayoutAlign="space-between center">
+  <h1>{{ title }}</h1>
+  <button mat-icon-button (click)="openMessagesDialog()">
+    <mat-icon> messages </mat-icon>
+  </button>
+</mat-toolbar>
 
 <nav mat-tab-nav-bar [tabPanel]="tabPanel">
   <a
@@ -14,5 +19,3 @@
 <mat-tab-nav-panel #tabPanel>
   <router-outlet></router-outlet>
 </mat-tab-nav-panel>
-
-<app-messages></app-messages>

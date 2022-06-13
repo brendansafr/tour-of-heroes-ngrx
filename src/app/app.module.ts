@@ -17,6 +17,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { HeroesComponent } from './heroes/heroes.component';
@@ -56,6 +58,8 @@ import { HeroSearchComponent } from './hero-search/hero-search.component';
     MatListModule,
     MatIconModule,
     MatBadgeModule,
+    MatToolbarModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
