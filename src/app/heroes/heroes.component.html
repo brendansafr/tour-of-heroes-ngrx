@@ -1,19 +1,22 @@
 <h2>My Heroes</h2>
 
-<div>
-  <label for="new-hero">Hero name: </label>
-  <input id="new-hero" #heroName />
-
-  <!-- (click) passes input value to add() and then clears the input -->
-  <button
-    mat-raised-button
-    type="button"
-    color="accent"
-    (click)="add(heroName.value); heroName.value = ''"
-  >
-    Add hero
-  </button>
-</div>
+<form>
+  <h3>Add a Hero</h3>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Hero Name</mat-label>
+    <input id="new-hero" #heroName matInput placeholder="Hero Name" />
+  </mat-form-field>
+  <div>
+    <button
+      mat-raised-button
+      type="button"
+      color="accent"
+      (click)="add(heroName.value); heroName.value = ''"
+    >
+      Add hero
+    </button>
+  </div>
+</form>
 
 <ul class="heroes">
   <li *ngFor="let hero of heroes">
