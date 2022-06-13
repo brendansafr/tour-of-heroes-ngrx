@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatListModule } from '@angular/material/list';
 
 import { AppComponent } from './app.component';
 import { HeroesComponent } from './heroes/heroes.component';
@@ -48,6 +49,7 @@ import { HeroSearchComponent } from './hero-search/hero-search.component';
     MatInputModule,
     MatButtonModule,
     MatTabsModule,
+    MatListModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
