@@ -6,8 +6,9 @@
 
   <!-- (click) passes input value to add() and then clears the input -->
   <button
+    mat-raised-button
     type="button"
-    class="add-button"
+    color="accent"
     (click)="add(heroName.value); heroName.value = ''"
   >
     Add hero
