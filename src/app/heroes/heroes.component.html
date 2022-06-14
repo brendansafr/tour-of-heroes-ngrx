@@ -19,8 +19,8 @@
 <h2>My Heroes</h2>
 
 <mat-nav-list>
-  <mat-list-item *ngFor="let hero of heroes" routerLink="/detail/{{ hero.id }}">
-    <span matLine>
+  <mat-list-item *ngFor="let hero of heroes$ | async">
+    <span matLine routerLink="/detail/{{ hero.id }}">
       <h3>
         {{ hero.name }}
       </h3>
@@ -30,6 +30,7 @@
       color="primary"
       matBadge="{{ hero.id }}"
       matBadgePosition="before"
+      routerLink="/detail/{{ hero.id }}"
     >
       Show Details
     </a>
