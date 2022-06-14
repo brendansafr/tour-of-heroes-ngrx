@@ -1,27 +1,41 @@
-# AngularTourOfHeroes
+# Tour of Heroes, Material
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.7.
+[![Uses angular core version 13.3.11](https://img.shields.io/badge/%40angular%2Fcore-13.3.11-blue)](https://angular.io/)
 
-## Development server
+[![Uses angular material version 13.3.9](https://img.shields.io/badge/%40angular%2Fmaterial-13.3.9-blue)](https://material.angular.io/)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Google's [Tour of Heroes app and tutorial](https://angular.io/tutorial), using [Angular Material](https://material.angular.io/).
 
-## Code scaffolding
+## Serve
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Run
 
-## Build
+```
+ng serve
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+and navigate to http://localhost:4200/, or run
 
-## Running unit tests
+```
+ng serve --open
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+and angular will attempt to launch a browser.
 
-## Running end-to-end tests
+## Tests
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Testing is not completed
 
-## Further help
+> Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+> 
+> Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Acknowledgements
+
+- Thank you to aurelien-leloup for [this article](https://medium.com/@AurelienLeloup/cache-http-requests-with-rxjs-for-angular-eb9bee93824d) and [this example](https://github.com/aurelien-leloup/angular-cache-example).
+
+## License
+
+[![MIT-style license](https://img.shields.io/badge/license-MIT--style-blue)](/LICENSE.txt)
+
+Based on [Tour of Heroes app and tutorial](https://angular.io/tutorial), Copyright (c) 2010-2022 Google LLC.

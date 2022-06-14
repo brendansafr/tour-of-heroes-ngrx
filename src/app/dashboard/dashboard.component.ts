@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { map, Observable, of } from 'rxjs';
 
 import { HeroService } from '../hero.service';
 
@@ -8,19 +9,14 @@ import { Hero } from '../hero';
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit {
-  heroes: Hero[] = [];
+  heroes$: Observable<Hero[]> = of([]);
 
   constructor(private heroService: HeroService) {}
 
   ngOnInit(): void {
-    this.getHeroes();
-  }
-
-  getHeroes(): void {
-    this.heroService
-      .getHeroes()
-      .subscribe((heroes) => (this.heroes = heroes.slice(1, 5)));
+    this.heroes$ = this.heroService.getHeroes().pipe(map((h) => h.slice(1, 5)));
   }
 }
