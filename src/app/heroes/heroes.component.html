@@ -1,6 +1,6 @@
 <form>
   <h2>Add a Hero</h2>
-  <mat-form-field class="example-full-width" appearance="fill">
+  <mat-form-field appearance="fill">
     <mat-label>Hero Name</mat-label>
     <input id="new-hero" #heroName matInput placeholder="Hero Name" />
   </mat-form-field>
@@ -11,6 +11,7 @@
       color="accent"
       (click)="add(heroName.value); heroName.value = ''"
     >
+      <mat-icon>add</mat-icon>
       Add hero
     </button>
   </div>
@@ -24,22 +25,28 @@
     matBadge="{{ hero.id }}"
     matBadgePosition="before"
   >
-    <span fxFlex="1 1 auto" routerLink="/detail/{{ hero.id }}">
+    <div fxFlex="1 1 auto" routerLink="/detail/{{ hero.id }}">
       <h3>
         {{ hero.name }}
       </h3>
-    </span>
-    <a mat-raised-button color="primary" routerLink="/detail/{{ hero.id }}">
-      Show Details
-    </a>
-    <button
-      mat-mini-fab
-      color="warn"
-      type="button"
-      title="delete hero"
-      (click)="delete(hero)"
-    >
-      <mat-icon>delete</mat-icon>
-    </button>
+    </div>
+    <div fxFlex="0 1 auto">
+      <a mat-raised-button color="primary" routerLink="/detail/{{ hero.id }}">
+        Show Details
+      </a>
+    </div>
+    <div fxFlex="0 1 auto">
+      <button
+        mat-raised-button
+        class="delete"
+        color="warn"
+        type="button"
+        title="delete hero"
+        (click)="delete(hero)"
+      >
+        <mat-icon>delete</mat-icon>
+        Delete Hero
+      </button>
+    </div>
   </mat-list-item>
 </mat-nav-list>
