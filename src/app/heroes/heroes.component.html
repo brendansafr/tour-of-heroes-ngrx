@@ -19,19 +19,17 @@
 <h2>My Heroes</h2>
 
 <mat-nav-list>
-  <mat-list-item *ngFor="let hero of heroes$ | async">
-    <span matLine routerLink="/detail/{{ hero.id }}">
+  <mat-list-item
+    *ngFor="let hero of heroes$ | async"
+    matBadge="{{ hero.id }}"
+    matBadgePosition="before"
+  >
+    <span fxFlex="1 1 auto" routerLink="/detail/{{ hero.id }}">
       <h3>
         {{ hero.name }}
       </h3>
     </span>
-    <a
-      mat-raised-button
-      color="primary"
-      matBadge="{{ hero.id }}"
-      matBadgePosition="before"
-      routerLink="/detail/{{ hero.id }}"
-    >
+    <a mat-raised-button color="primary" routerLink="/detail/{{ hero.id }}">
       Show Details
     </a>
     <button
