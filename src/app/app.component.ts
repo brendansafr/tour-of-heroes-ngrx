@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { MatDialog } from '@angular/material/dialog';
 
-import { MessagesComponent } from './messages/messages.component';
+import { LogComponent } from './log/log.component';
 
 @Component({
   selector: 'app-root',
@@ -30,7 +30,7 @@ export class AppComponent {
 
   constructor(private router: Router, public matDialog: MatDialog) {}
 
-  openMessagesDialog(): void {
-    this.matDialog.open(MessagesComponent);
+  openLogDialog(): void {
+    this.matDialog.open(LogComponent);
   }
 }

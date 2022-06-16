@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { MatDialogRef } from '@angular/material/dialog';
-
-import { MessageService } from '../message.service';
+import { MessagesService } from './messages.service';
 
 @Component({
   selector: 'app-messages',
@@ -10,10 +8,7 @@ import { MessageService } from '../message.service';
   styleUrls: ['./messages.component.css'],
 })
 export class MessagesComponent implements OnInit {
-  constructor(
-    public dialogRef: MatDialogRef<MessagesComponent>,
-    public messageService: MessageService
-  ) {}
+  constructor(public messagesService: MessagesService) {}
 
   ngOnInit(): void {}
 }
