@@ -1,7 +1,13 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, of, tap } from 'rxjs';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
+import { BehaviorSubject, finalize, Observable, of, tap } from 'rxjs';
 
 import { HeroService } from '../hero.service';
+import { LoadingService } from '../loading.service';
 
 import { Hero } from '../hero';
 
@@ -12,50 +18,58 @@ import { Hero } from '../hero';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeroesComponent implements OnInit {
-  loadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-    false
-  );
-  loading$: Observable<boolean> = this.loadingSubject
-    .asObservable()
-    .pipe(tap((loading) => console.log(loading)));
+  loadIndicator: number = 0;
 
   heroesSubject: BehaviorSubject<Hero[]> = new BehaviorSubject<Hero[]>([]);
   heroes$: Observable<Hero[]> = this.heroesSubject.asObservable();
 
-  constructor(private heroService: HeroService) {}
+  constructor(
+    public heroService: HeroService,
+    public loadingService: LoadingService
+  ) {}
 
   add(name: string): void {
-    this.loadingSubject.next(true);
     name = name.trim();
     if (!name) {
       return;
     }
-    this.heroService.addHero({ name } as Hero).subscribe();
-    this.getHeroes();
+    this.loadingService.setLoadIndicator(this.loadIndicator, true);
+    this.heroService
+      .addHero({ name } as Hero)
+      .pipe(
+        finalize(() => {
+          this.loadingService.setLoadIndicator(this.loadIndicator, false);
+          this.refresh();
+        })
+      )
+      .subscribe();
   }
 
   delete(hero: Hero): void {
-    this.loadingSubject.next(true);
-    this.heroService.deleteHero(hero.id).subscribe();
-    this.getHeroes();
+    this.loadingService.setLoadIndicator(this.loadIndicator, true);
+    this.heroService
+      .deleteHero(hero.id)
+      .pipe(
+        finalize(() => {
+          this.loadingService.setLoadIndicator(this.loadIndicator, false);
+          this.refresh();
+        })
+      )
+      .subscribe();
   }
 
   refresh(): void {
-    this.heroService.getHeroes();
+    this.loadingService.setLoadIndicator(this.loadIndicator, true);
+
+    this.heroService.refresh(() => {
+      this.loadingService.setLoadIndicator(this.loadIndicator, false);
+    });
   }
 
   getHeroes(): void {
-    this.loadingSubject.next(true);
-    this.heroService
-      .Heroes$()
-      .pipe(
-        tap(() => {
-          this.loadingSubject.next(false);
-        })
-      )
-      .subscribe((h) => {
-        this.heroesSubject.next(h);
-      });
+    this.heroService.getHeroes().subscribe((h) => {
+      this.heroesSubject.next(h);
+    });
   }
 
   ngOnInit(): void {

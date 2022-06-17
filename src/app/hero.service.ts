@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, shareReplay, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
+import { catchError, finalize, shareReplay, tap } from 'rxjs/operators';
 
 import { MessageService } from './message.service';
 
@@ -34,17 +34,20 @@ export class HeroService {
   }
 
   /** GET heroes from the server */
-  getHeroes(): void {
+  refresh(callback: Function): void {
     this._http
       .get<Hero[]>(this._heroesUrl)
       .pipe(
         tap((_) => this._log('fetched heroes')),
-        catchError(this._handleError<Hero[]>('getHeroes', []))
+        catchError(this._handleError<Hero[]>('getHeroes', [])),
+        finalize(() => {
+          callback();
+        })
       )
       .subscribe((h) => this.heroesSubject.next(h));
   }
 
-  Heroes$(): Observable<Hero[]> {
+  getHeroes(): Observable<Hero[]> {
     return this.heroesSubject.asObservable();
   }
 

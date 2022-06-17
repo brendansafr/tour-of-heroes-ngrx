@@ -1,10 +1,14 @@
 <h2>Top Heroes</h2>
 
+<div *ngIf="this.loadingService.getLoadIndicator(loadIndicator)">
+  <p>Loading...</p>
+</div>
+
 <div class="heroes-menu">
   <a
     mat-raised-button
     color="primary"
-    *ngFor="let hero of heroes$ | async"
+    *ngFor="let hero of heroes$ | async as heroes"
     routerLink="/detail/{{ hero.id }}"
   >
     {{ hero.name }}

@@ -24,7 +24,9 @@
   Refresh
 </button>
 
-<p *ngIf="loading$ | async">loading...</p>
+<div *ngIf="this.loadingService.getLoadIndicator(loadIndicator)">
+  <p>Loading...</p>
+</div>
 
 <mat-nav-list>
   <mat-list-item
