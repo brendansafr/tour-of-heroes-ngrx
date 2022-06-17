@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, shareReplay, tap } from 'rxjs/operators';
 
 import { MessageService } from './message.service';
 
@@ -34,7 +34,7 @@ export class HeroService {
   }
 
   /** GET heroes from the server */
-  private _getHeroes(): void {
+  getHeroes(): void {
     this._http
       .get<Hero[]>(this._heroesUrl)
       .pipe(
@@ -44,8 +44,7 @@ export class HeroService {
       .subscribe((h) => this.heroesSubject.next(h));
   }
 
-  getHeroes(): Observable<Hero[]> {
-    this._getHeroes();
+  Heroes$(): Observable<Hero[]> {
     return this.heroesSubject.asObservable();
   }
 
@@ -70,7 +69,7 @@ export class HeroService {
     return this._http.post<Hero>(this._heroesUrl, hero, this.httpOptions).pipe(
       tap((newHero: Hero) => {
         this._log(`added hero w/ id=${newHero.id}`);
-        this._getHeroes();
+        this.getHeroes();
       }),
       catchError(this._handleError<Hero>('addHero'))
     );
@@ -91,7 +90,7 @@ export class HeroService {
     return this._http.delete<Hero>(url, this.httpOptions).pipe(
       tap((_) => {
         this._log(`deleted hero id=${id}`);
-        this._getHeroes();
+        this.getHeroes();
       }),
       catchError(this._handleError<Hero>('deleteHero'))
     );

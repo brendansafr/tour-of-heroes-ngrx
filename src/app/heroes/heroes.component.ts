@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 
 import { HeroService } from '../hero.service';
 
@@ -12,23 +12,53 @@ import { Hero } from '../hero';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeroesComponent implements OnInit {
-  heroes$: Observable<Hero[]> = of([]);
+  loadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
+  loading$: Observable<boolean> = this.loadingSubject
+    .asObservable()
+    .pipe(tap((loading) => console.log(loading)));
+
+  heroesSubject: BehaviorSubject<Hero[]> = new BehaviorSubject<Hero[]>([]);
+  heroes$: Observable<Hero[]> = this.heroesSubject.asObservable();
 
   constructor(private heroService: HeroService) {}
 
   add(name: string): void {
+    this.loadingSubject.next(true);
     name = name.trim();
     if (!name) {
       return;
     }
     this.heroService.addHero({ name } as Hero).subscribe();
+    this.getHeroes();
   }
 
   delete(hero: Hero): void {
+    this.loadingSubject.next(true);
     this.heroService.deleteHero(hero.id).subscribe();
+    this.getHeroes();
+  }
+
+  refresh(): void {
+    this.heroService.getHeroes();
+  }
+
+  getHeroes(): void {
+    this.loadingSubject.next(true);
+    this.heroService
+      .Heroes$()
+      .pipe(
+        tap(() => {
+          this.loadingSubject.next(false);
+        })
+      )
+      .subscribe((h) => {
+        this.heroesSubject.next(h);
+      });
   }
 
   ngOnInit(): void {
-    this.heroes$ = this.heroService.getHeroes();
+    this.getHeroes();
   }
 }

@@ -19,6 +19,13 @@
 
 <h2>My Heroes</h2>
 
+<button mat-icon-button type="button" (click)="refresh()">
+  <mat-icon>refresh</mat-icon>
+  Refresh
+</button>
+
+<p *ngIf="loading$ | async">loading...</p>
+
 <mat-nav-list>
   <mat-list-item
     *ngFor="let hero of heroes$ | async"

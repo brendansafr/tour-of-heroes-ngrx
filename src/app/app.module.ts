@@ -28,6 +28,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HeroSearchComponent } from './hero-search/hero-search.component';
 import { LogComponent } from './log/log.component';
+import { LayoutComponent } from './layout/layout.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { LogComponent } from './log/log.component';
     DashboardComponent,
     HeroSearchComponent,
     LogComponent,
+    LayoutComponent,
   ],
   imports: [
     BrowserModule,
