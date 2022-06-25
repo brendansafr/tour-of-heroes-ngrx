@@ -1,5 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
+import { BehaviorSubject, finalize, Observable, of, tap } from 'rxjs';
 
 import { HeroService } from '../hero.service';
 
@@ -11,24 +16,29 @@ import { Hero } from '../hero';
   styleUrls: ['./heroes.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeroesComponent implements OnInit {
-  heroes$: Observable<Hero[]> = of([]);
+export class HeroesComponent {
+  isEmpty: boolean = false;
+  isLoading$ = this._service.isLoading$;
 
-  constructor(private heroService: HeroService) {}
+  loadIndicator: number = 0;
+
+  heroes$: Observable<Hero[]> = this._service.getHeroes$();
+
+  constructor(private _service: HeroService) {}
 
   add(name: string): void {
     name = name.trim();
     if (!name) {
       return;
     }
-    this.heroService.addHero({ name } as Hero).subscribe();
+    this._service.addHero({ name } as Hero).subscribe();
   }
 
   delete(hero: Hero): void {
-    this.heroService.deleteHero(hero.id).subscribe();
+    this._service.deleteHero(hero.id).subscribe();
   }
 
-  ngOnInit(): void {
-    this.heroes$ = this.heroService.getHeroes();
+  refresh(): void {
+    this._service.refresh();
   }
 }

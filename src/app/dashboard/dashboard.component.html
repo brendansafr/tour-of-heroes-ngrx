@@ -1,10 +1,14 @@
 <h2>Top Heroes</h2>
 
-<div class="heroes-menu">
+<div fxLayoutAlign="center center" *ngIf="isLoading$ | async">
+  <p><mat-spinner mode="indeterminate"></mat-spinner></p>
+</div>
+
+<div fxLayoutAlign="start center" fxLayoutGap="1em">
   <a
     mat-raised-button
     color="primary"
-    *ngFor="let hero of heroes$ | async"
+    *ngFor="let hero of heroes$ | async as heroes"
     routerLink="/detail/{{ hero.id }}"
   >
     {{ hero.name }}

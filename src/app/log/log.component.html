@@ -1,0 +1,15 @@
+<div>
+  <h2>Log</h2>
+
+  <button mat-raised-button type="button" (click)="service.clearLog()">
+    Clear log
+  </button>
+
+  <cdk-virtual-scroll-viewport itemSize="50" class="viewport">
+    <mat-list>
+      <mat-list-item *cdkVirtualFor="let message of service.log">
+        {{ message }}
+      </mat-list-item>
+    </mat-list>
+  </cdk-virtual-scroll-viewport>
+</div>
