@@ -24,7 +24,9 @@
 </div>
 
 <p *ngIf="isEmpty$ | async">Hero not found.</p>
-<p *ngIf="isLoading$ | async">Loading...</p>
+<p *ngIf="isLoading$ | async">
+  <mat-spinner mode="indeterminate"></mat-spinner>
+</p>
 
 <div *ngIf="hero">
   <button mat-raised-button type="button" color="accent" (click)="save()">
