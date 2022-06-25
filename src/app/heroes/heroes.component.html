@@ -19,6 +19,10 @@
 
 <h2>My Heroes</h2>
 
+<div fxLayoutAlign="center center" *ngIf="isLoading$ | async">
+  <p><mat-spinner mode="indeterminate"></mat-spinner></p>
+</div>
+
 <mat-nav-list>
   <mat-list-item
     *ngFor="let hero of heroes$ | async"
