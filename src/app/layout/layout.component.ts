@@ -1,8 +1,7 @@
+import { HeroService } from './../hero.service';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { HeroService } from '../hero.service';
-import { LoadingService } from '../loading.service';
 
 import { LogComponent } from '../log/log.component';
 
@@ -27,18 +26,21 @@ export class LayoutComponent {
     },
   ];
 
+  constructor(
+    private router: Router,
+    public matDialog: MatDialog,
+    public _service: HeroService
+  ) {}
+
   isLinkActive(i: number) {
     return this.router.url == this.links[i].path;
   }
 
-  constructor(
-    private router: Router,
-    public matDialog: MatDialog,
-    private _heroService: HeroService,
-    private _loadingService: LoadingService
-  ) {}
-
   openLogDialog(): void {
     this.matDialog.open(LogComponent);
+  }
+
+  refresh(): void {
+    this._service.refresh();
   }
 }

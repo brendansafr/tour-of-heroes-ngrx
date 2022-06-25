@@ -19,12 +19,7 @@
 
 <h2>My Heroes</h2>
 
-<button mat-icon-button type="button" (click)="refresh()">
-  <mat-icon>refresh</mat-icon>
-  Refresh
-</button>
-
-<div *ngIf="isLoading">
+<div *ngIf="isLoading$ | async">
   <p>Loading...</p>
 </div>
 

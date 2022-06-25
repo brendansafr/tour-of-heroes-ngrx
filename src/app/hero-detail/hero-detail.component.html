@@ -1,15 +1,18 @@
+<div>
+  <button mat-raised-button type="button" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+    Go Back
+  </button>
+</div>
+
 <div *ngIf="hero">
-  <div>
-    <button mat-raised-button type="button" (click)="goBack()">
-      <mat-icon>arrow_back</mat-icon>
-      Go Back
-    </button>
-  </div>
+  <div></div>
   <h2>{{ hero.name | uppercase }} Details</h2>
   <div>
     <mat-form-field appearance="fill">
       <mat-label>Hero id: </mat-label>
       <input matInput [(ngModel)]="hero.id" readonly />
+      <mat-hint>Read only</mat-hint>
     </mat-form-field>
   </div>
   <div>
@@ -18,10 +21,14 @@
       <input matInput [(ngModel)]="hero.name" placeholder="Hero name" />
     </mat-form-field>
   </div>
+</div>
+
+<p *ngIf="isEmpty$ | async">Hero not found.</p>
+<p *ngIf="isLoading$ | async">Loading...</p>
+
+<div *ngIf="hero">
   <button mat-raised-button type="button" color="accent" (click)="save()">
     <mat-icon>save</mat-icon>
     Save
   </button>
 </div>
-
-<p *ngIf="!hero">Hero not found.</p>

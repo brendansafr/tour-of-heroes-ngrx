@@ -1,10 +1,10 @@
 <h2>Top Heroes</h2>
 
-<div *ngIf="this.loadingService.getLoadIndicator(loadIndicator)">
+<div *ngIf="isLoading$ | async">
   <p>Loading...</p>
 </div>
 
-<div class="heroes-menu">
+<div fxLayoutAlign="start center" fxLayoutGap="1em">
   <a
     mat-raised-button
     color="primary"

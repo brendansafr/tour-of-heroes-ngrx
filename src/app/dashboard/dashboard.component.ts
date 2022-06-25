@@ -1,34 +1,27 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { finalize, map, Observable, of } from 'rxjs';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { map, Observable, tap } from 'rxjs';
 
 import { HeroService } from '../hero.service';
-import { LoadingService } from '../loading.service';
 
 import { Hero } from '../hero';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardComponent implements OnInit {
-  loadIndicator: number = 0;
+export class DashboardComponent {
+  isEmpty: boolean = false;
+  isLoading$ = this.service.isLoading$;
 
-  heroes$: Observable<Hero[]> = of([]);
+  heroes$: Observable<Hero[]> = this.service.getHeroes$().pipe(
+    map((h) => h.slice(1, 5)),
+    tap((b) => {
+      if (b == []) {
+        this.isEmpty = true;
+      }
+    })
+  );
 
-  constructor(
-    private heroService: HeroService,
-    public loadingService: LoadingService
-  ) {}
-
-  getHeroes(): void {
-    this.heroes$ = this.heroService
-      .getHeroes$()
-      .pipe(map((h) => h.slice(1, 5)));
-  }
-
-  ngOnInit(): void {
-    this.getHeroes();
-  }
+  constructor(public service: HeroService) {}
 }

@@ -1,8 +1,14 @@
 <mat-toolbar fxLayoutAlign="space-between center">
   <h1>{{ title }}</h1>
-  <button mat-icon-button (click)="openLogDialog()">
-    <mat-icon> messages </mat-icon>
-  </button>
+
+  <div>
+    <button mat-icon-button type="button" (click)="refresh()">
+      <mat-icon>refresh</mat-icon>
+    </button>
+    <button mat-icon-button (click)="openLogDialog()">
+      <mat-icon> messages </mat-icon>
+    </button>
+  </div>
 </mat-toolbar>
 
 <nav mat-tab-nav-bar [tabPanel]="tabPanel">

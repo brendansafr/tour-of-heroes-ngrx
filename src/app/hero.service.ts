@@ -19,7 +19,10 @@ export class HeroService {
 
   // Cache
 
-  public isLoading: boolean = false;
+  private _isLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
+  public isLoading$: Observable<boolean> = this._isLoading.asObservable();
 
   private _heroes: BehaviorSubject<Hero[]> = new BehaviorSubject<Hero[]>([]);
   private _isHeroesValid: boolean = false;
@@ -30,38 +33,33 @@ export class HeroService {
 
   /** GET hero by id. Will 404 if id not found */
   getHero(id: number): Observable<Hero> {
-    this.isLoading = true;
     const url = `${this._heroesUrl}/${id}`;
+
+    this._isLoading.next(true);
+
     return this._http.get<Hero>(url).pipe(
       tap(() => {
         this._logService.postLog(`fetched hero id=${id}`);
       }),
+      catchError(this._handleError<Hero>(`getHero id=${id}`)),
       finalize(() => {
-        this.isLoading = false;
-      }),
-      catchError(this._handleError<Hero>(`getHero id=${id}`))
+        this._isLoading.next(false);
+      })
     );
   }
 
   /** GET heroes from the server */
-  refresh(callback?: Function): void {
-    this._getHeroes();
-    if (callback) {
-      callback();
-    }
-  }
-
-  _getHeroes(): void {
-    this.isLoading = true;
+  private _getHeroes(): void {
+    this._isLoading.next(true);
 
     this._http
       .get<Hero[]>(this._heroesUrl)
       .pipe(
         tap((_) => this._logService.postLog('fetched heroes')),
+        catchError(this._handleError<Hero[]>('_getHeroes', [])),
         finalize(() => {
-          this.isLoading = false;
-        }),
-        catchError(this._handleError<Hero[]>('_getHeroes', []))
+          this._isLoading.next(false);
+        })
       )
       .subscribe((h) => {
         this._isHeroesValid = true;
@@ -78,25 +76,37 @@ export class HeroService {
 
   /* GET heroes whose name contains search term */
   searchHeroes(term: string): Observable<Hero[]> {
+    this._isLoading.next(true);
+
     if (!term.trim()) {
       // if not search term, return empty hero array.
       return of([]);
     }
     return this._http.get<Hero[]>(`${this._heroesUrl}/?name=${term}`).pipe(
-      tap((x) =>
+      tap((x) => {
         x.length
           ? this._logService.postLog(`found heroes matching "${term}"`)
-          : this._logService.postLog(`no heroes matching "${term}"`)
-      ),
-      catchError(this._handleError<Hero[]>('searchHeroes', []))
+          : this._logService.postLog(`no heroes matching "${term}"`);
+      }),
+      catchError(this._handleError<Hero[]>('searchHeroes', [])),
+      finalize(() => {
+        this._isLoading.next(false);
+      })
     );
   }
 
   /** POST: add a new hero to the server */
   addHero(hero: Hero): Observable<Hero> {
+    this._isLoading.next(true);
+
     return this._http.post<Hero>(this._heroesUrl, hero, this.httpOptions).pipe(
       tap((newHero: Hero) => {
+        this._isLoading.next(false);
+
         this._logService.postLog(`added hero w/ id=${newHero.id}`);
+      }),
+
+      finalize(() => {
         this.refresh();
       }),
       catchError(this._handleError<Hero>('addHero'))
@@ -105,8 +115,14 @@ export class HeroService {
 
   /** PUT: update the hero on the server */
   updateHero(hero: Hero): Observable<any> {
+    this._isLoading.next(true);
+
     return this._http.put(this._heroesUrl, hero, this.httpOptions).pipe(
-      tap((_) => this._logService.postLog(`updated hero id=${hero.id}`)),
+      tap(() => {
+        this._isLoading.next(false);
+
+        this._logService.postLog(`updated hero id=${hero.id}`);
+      }),
       catchError(this._handleError<any>('updateHero'))
     );
   }
@@ -115,13 +131,22 @@ export class HeroService {
   deleteHero(id: number): Observable<Hero> {
     const url = `${this._heroesUrl}/${id}`;
 
+    this._isLoading.next(true);
+
     return this._http.delete<Hero>(url, this.httpOptions).pipe(
       tap((_) => {
+        this._isLoading.next(true);
         this._logService.postLog(`deleted hero id=${id}`);
-        this.refresh();
       }),
-      catchError(this._handleError<Hero>('deleteHero'))
+      catchError(this._handleError<Hero>('deleteHero')),
+      finalize(() => {
+        this.refresh();
+      })
     );
+  }
+
+  refresh(): void {
+    this._getHeroes();
   }
 
   /**

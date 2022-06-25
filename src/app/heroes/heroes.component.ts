@@ -7,7 +7,6 @@ import {
 import { BehaviorSubject, finalize, Observable, of, tap } from 'rxjs';
 
 import { HeroService } from '../hero.service';
-import { LoadingService } from '../loading.service';
 
 import { Hero } from '../hero';
 
@@ -18,55 +17,28 @@ import { Hero } from '../hero';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeroesComponent {
-  isLoading = false;
+  isEmpty: boolean = false;
+  isLoading$ = this._service.isLoading$;
+
   loadIndicator: number = 0;
 
-  heroes$: Observable<Hero[]> = this.heroService.getHeroes$().pipe(
-    finalize(() => {
-      this.isLoading = false;
-    })
-  );
+  heroes$: Observable<Hero[]> = this._service.getHeroes$();
 
-  constructor(
-    public heroService: HeroService,
-    public loadingService: LoadingService
-  ) {}
+  constructor(private _service: HeroService) {}
 
   add(name: string): void {
     name = name.trim();
     if (!name) {
       return;
     }
-    this.loadingService.setLoadIndicator(this.loadIndicator, true);
-    this.heroService
-      .addHero({ name } as Hero)
-      .pipe(
-        finalize(() => {
-          this.loadingService.setLoadIndicator(this.loadIndicator, false);
-          this.refresh();
-        })
-      )
-      .subscribe();
+    this._service.addHero({ name } as Hero).subscribe();
   }
 
   delete(hero: Hero): void {
-    this.loadingService.setLoadIndicator(this.loadIndicator, true);
-    this.heroService
-      .deleteHero(hero.id)
-      .pipe(
-        finalize(() => {
-          this.loadingService.setLoadIndicator(this.loadIndicator, false);
-          this.refresh();
-        })
-      )
-      .subscribe();
+    this._service.deleteHero(hero.id).subscribe();
   }
 
   refresh(): void {
-    this.loadingService.setLoadIndicator(this.loadIndicator, true);
-
-    this.heroService.refresh(() => {
-      this.loadingService.setLoadIndicator(this.loadIndicator, false);
-    });
+    this._service.refresh();
   }
 }
