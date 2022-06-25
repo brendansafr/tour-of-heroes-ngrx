@@ -17,11 +17,15 @@ import { Hero } from '../hero';
   styleUrls: ['./heroes.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeroesComponent implements OnInit {
+export class HeroesComponent {
+  isLoading = false;
   loadIndicator: number = 0;
 
-  heroesSubject: BehaviorSubject<Hero[]> = new BehaviorSubject<Hero[]>([]);
-  heroes$: Observable<Hero[]> = this.heroesSubject.asObservable();
+  heroes$: Observable<Hero[]> = this.heroService.getHeroes$().pipe(
+    finalize(() => {
+      this.isLoading = false;
+    })
+  );
 
   constructor(
     public heroService: HeroService,
@@ -64,15 +68,5 @@ export class HeroesComponent implements OnInit {
     this.heroService.refresh(() => {
       this.loadingService.setLoadIndicator(this.loadIndicator, false);
     });
-  }
-
-  getHeroes(): void {
-    this.heroService.getHeroes().subscribe((h) => {
-      this.heroesSubject.next(h);
-    });
-  }
-
-  ngOnInit(): void {
-    this.getHeroes();
   }
 }

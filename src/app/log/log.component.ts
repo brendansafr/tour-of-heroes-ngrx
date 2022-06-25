@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { MatDialogRef } from '@angular/material/dialog';
 
@@ -9,11 +9,9 @@ import { LogService } from './log.service';
   templateUrl: './log.component.html',
   styleUrls: ['./log.component.css'],
 })
-export class LogComponent implements OnInit {
+export class LogComponent {
   constructor(
     public dialogRef: MatDialogRef<LogComponent>,
-    public logService: LogService
+    public service: LogService
   ) {}
-
-  ngOnInit(): void {}
 }

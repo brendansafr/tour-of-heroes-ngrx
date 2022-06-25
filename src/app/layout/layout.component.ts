@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { HeroService } from '../hero.service';
@@ -11,7 +11,7 @@ import { LogComponent } from '../log/log.component';
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css'],
 })
-export class LayoutComponent implements OnInit {
+export class LayoutComponent {
   loadIndicator: number = 0;
 
   title = 'Tour of Heroes';
@@ -40,12 +40,5 @@ export class LayoutComponent implements OnInit {
 
   openLogDialog(): void {
     this.matDialog.open(LogComponent);
-  }
-
-  ngOnInit(): void {
-    this._loadingService.setLoadIndicator(this.loadIndicator, true);
-    this._heroService.refresh(() => {
-      this._loadingService.setLoadIndicator(this.loadIndicator, false);
-    });
   }
 }
