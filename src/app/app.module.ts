@@ -9,6 +9,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './in-memory-data.service';
 
+import { StoreModule } from '@ngrx/store';
+import { heroReducer } from './hero.reducer';
+
 import { AppRoutingModule } from './app-routing.module';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -57,6 +60,7 @@ import { LayoutComponent } from './layout/layout.component';
       dataEncapsulation: false,
     }),
 
+    StoreModule.forRoot({ hero: heroReducer }),
     AppRoutingModule,
     MatFormFieldModule,
     MatInputModule,
